@@ -259,7 +259,7 @@ MonoBehaviour:
   squidPrefab: {fileID: 361476463042664808, guid: 9a5670cde5fc9dd4eaa5eeb628ac0306, type: 3}
   crabPrefab: {fileID: 0}
   octopusPrefab: {fileID: 0}
-  alienBulletPrefab: {fileID: 0}
+  alienBulletPrefab: {fileID: 1629758971886842698, guid: 1fc38bedf0587ad43a04b71b6be3eac3, type: 3}
   stepSound: {fileID: 0}
   stepSounds: []
   fireInterval: 2
