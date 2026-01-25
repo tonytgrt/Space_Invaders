@@ -42,12 +42,12 @@ public class AlienBullet : MonoBehaviour
         }
         else if (other.CompareTag("Shield"))
         {
-            //ShieldBlock shield = other.GetComponent<ShieldBlock>();
-            //if (shield != null)
-            //{
-            //    shield.TakeDamage();
-            //}
-            //Destroy(gameObject);
+            ShieldBlock shield = other.GetComponent<ShieldBlock>();
+            if (shield != null)
+            {
+                shield.TakeDamage();
+            }
+            Destroy(gameObject);
         }
     }
 }
