@@ -103,13 +103,12 @@ public class UFO : MonoBehaviour
         // Random point value
         int points = pointValues[Random.Range(0, pointValues.Length)];
 
-        // TODO: Uncomment after creating GameManager in Step 10
-        // GameManager gm = FindObjectOfType<GameManager>();
-        // if (gm != null)
-        // {
-        //     gm.AddScore(points);
-        //     gm.ShowFloatingScore(points, transform.position);
-        // }
+        GameManager gm = FindObjectOfType<GameManager>();
+        if (gm != null)
+        {
+            gm.AddScore(points);
+            gm.ShowFloatingScore(points, transform.position);
+        }
 
         // Play explosion sound
         if (explosionSound != null)

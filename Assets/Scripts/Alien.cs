@@ -50,12 +50,11 @@ public class Alien : MonoBehaviour
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         }
 
-        // TODO: Uncomment after creating GameManager in Step 10
-        // GameManager gm = FindObjectOfType<GameManager>();
-        // if (gm != null)
-        // {
-        //     gm.AddScore(pointValue);
-        // }
+        GameManager gm = FindObjectOfType<GameManager>();
+        if (gm != null)
+        {
+            gm.AddScore(pointValue);
+        }
 
         // Notify formation
         if (formation != null)

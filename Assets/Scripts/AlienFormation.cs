@@ -225,12 +225,11 @@ public class AlienFormation : MonoBehaviour
         {
             if (alien != null && alien.IsAlive() && alien.transform.position.z <= playerZ)
             {
-                // TODO: Uncomment after creating GameManager in Step 10
-                // GameManager gm = FindObjectOfType<GameManager>();
-                // if (gm != null)
-                // {
-                //     gm.GameOver();
-                // }
+                GameManager gm = FindObjectOfType<GameManager>();
+                if (gm != null)
+                {
+                    gm.GameOver();
+                }
                 return;
             }
         }
@@ -250,12 +249,11 @@ public class AlienFormation : MonoBehaviour
         // Check for wave complete
         if (aliensRemaining <= 0)
         {
-            // TODO: Uncomment after creating GameManager in Step 10
-            // GameManager gm = FindObjectOfType<GameManager>();
-            // if (gm != null)
-            // {
-            //     gm.WaveComplete();
-            // }
+            GameManager gm = FindObjectOfType<GameManager>();
+            if (gm != null)
+            {
+                gm.WaveComplete();
+            }
         }
     }
 

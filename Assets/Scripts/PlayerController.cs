@@ -75,11 +75,11 @@ public class PlayerController : MonoBehaviour
 
     public void Die()
     {
-        //GameManager gm = FindObjectOfType<GameManager>();
-        //if (gm != null)
-        //{
-        //    gm.PlayerHit();
-        //}
+        GameManager gm = FindObjectOfType<GameManager>();
+        if (gm != null)
+        {
+            gm.PlayerHit();
+        }
     }
 
 
