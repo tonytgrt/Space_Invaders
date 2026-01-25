@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - GameManager
+  - PlayerBullet
+  - Alien
+  - AlienBullet
+  - Shield
+  - UFO
   layers:
   - Default
   - TransparentFX

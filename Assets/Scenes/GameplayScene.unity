@@ -216,6 +216,68 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &935123604
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 935123606}
+  - component: {fileID: 935123605}
+  m_Layer: 0
+  m_Name: AlienFormation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &935123605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935123604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9adf840a5bc94014e8ac6dc0af1a6a71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rows: 5
+  columns: 11
+  horizontalSpacing: 0.8
+  depthSpacing: 0.6
+  baseStepTime: 1
+  minStepTime: 0.1
+  stepDistance: 0.3
+  dropDistance: 0.4
+  leftBound: -7
+  rightBound: 7
+  playerZ: -5
+  squidPrefab: {fileID: 361476463042664808, guid: 9a5670cde5fc9dd4eaa5eeb628ac0306, type: 3}
+  crabPrefab: {fileID: 0}
+  octopusPrefab: {fileID: 0}
+  alienBulletPrefab: {fileID: 0}
+  stepSound: {fileID: 0}
+  stepSounds: []
+  fireInterval: 2
+--- !u!4 &935123606
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935123604}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,6 +370,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1 &1276459919
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1276459920}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1276459920
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276459919}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1654067550}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1654067546
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,7 +504,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1276459920}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1654067551
@@ -429,8 +523,8 @@ MonoBehaviour:
   moveSpeed: 5
   leftBound: -10
   rightBound: 10
-  bulletPrefab: {fileID: 0}
-  firePoint: {fileID: 0}
+  bulletPrefab: {fileID: 5461348647889555726, guid: fd1c4df2bd113de468483f2892ea91cf, type: 3}
+  firePoint: {fileID: 1276459920}
   shootSound: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -439,3 +533,4 @@ SceneRoots:
   - {fileID: 963194228}
   - {fileID: 705507995}
   - {fileID: 1654067550}
+  - {fileID: 935123606}
