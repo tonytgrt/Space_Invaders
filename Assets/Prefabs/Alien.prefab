@@ -122,7 +122,7 @@ MonoBehaviour:
   pointValue: 10
   alienType: 0
   deathSound: {fileID: 0}
-  explosionPrefab: {fileID: 0}
+  explosionPrefab: {fileID: 5762706949424026114, guid: bad92dc9cd4e0a44b8358b50e133eea4, type: 3}
 --- !u!1001 &8437837496819476160
 PrefabInstance:
   m_ObjectHideFlags: 0
