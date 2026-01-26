@@ -31,13 +31,9 @@ public class AlienBullet : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        // Player collision is handled by PlayerController.cs
         if (other.CompareTag("Player"))
         {
-            PlayerController player = other.GetComponent<PlayerController>();
-            if (player != null)
-            {
-                player.Die();
-            }
             Destroy(gameObject);
         }
         else if (other.CompareTag("Shield"))

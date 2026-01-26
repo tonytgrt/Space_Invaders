@@ -12,13 +12,13 @@ public class UFO : MonoBehaviour
     public AudioClip explosionSound;
     public GameObject explosionPrefab;
 
-    public float ufoZ = 3f;  // Z position where UFO flies
+    public float ufoZ = 5f;  // Z position where UFO flies
     private float spawnTimer = 0f;
     private int direction = 1;
     private bool isActive = false;
     private AudioSource audioSource;
-    private float leftSpawn = -10f;
-    private float rightSpawn = 10f;
+    private float leftSpawn = -15f;
+    private float rightSpawn = 15f;
 
     void Start()
     {
