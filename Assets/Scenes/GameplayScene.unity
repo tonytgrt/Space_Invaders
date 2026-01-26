@@ -511,11 +511,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   spawnInterval: 5
-  spawnChance: 0.5
+  spawnChance: 1
   pointValues: 3200000064000000960000002c010000
-  flyingSound: {fileID: 0}
-  explosionSound: {fileID: 0}
-  explosionPrefab: {fileID: 0}
+  flyingSound: {fileID: 8300000, guid: c5e2a73ad4706440f93bf05df0b465fe, type: 3}
+  explosionSound: {fileID: 8300000, guid: 0c008ee3ee72a4362a35be25fa5de043, type: 3}
+  explosionPrefab: {fileID: 5762706949424026114, guid: bad92dc9cd4e0a44b8358b50e133eea4, type: 3}
   ufoZ: 6
 --- !u!1 &705507993
 GameObject:
@@ -1092,7 +1092,7 @@ MonoBehaviour:
   player: {fileID: 0}
   alienFormation: {fileID: 0}
   playerStartPosition: {x: 0, y: 0, z: -5}
-  playerDeathSound: {fileID: 0}
+  playerDeathSound: {fileID: 8300000, guid: 7e26c9daf4c32483b9c2790e662d3f1b, type: 3}
   extraLifeSound: {fileID: 0}
 --- !u!4 &1244848040
 Transform:
@@ -1449,7 +1449,7 @@ MonoBehaviour:
   rightBound: 10
   bulletPrefab: {fileID: 5461348647889555726, guid: fd1c4df2bd113de468483f2892ea91cf, type: 3}
   firePoint: {fileID: 1276459920}
-  shootSound: {fileID: 0}
+  shootSound: {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
 --- !u!1 &1822869077
 GameObject:
   m_ObjectHideFlags: 0
