@@ -8,7 +8,7 @@ public class AlienFormation : MonoBehaviour
     public int rows = 5;
     public int columns = 11;
     public float horizontalSpacing = 0.8f;  // X spacing
-    public float depthSpacing = 0.6f;       // Z spacing between rows
+    public float depthSpacing = 1.0f;       // Z spacing between rows
 
     [Header("Movement Settings")]
     public float baseStepTime = 1.0f;

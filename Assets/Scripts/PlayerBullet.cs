@@ -5,21 +5,20 @@ using UnityEngine;
 public class PlayerBullet : MonoBehaviour
 {
     public float speed = 10f;
-    public float maxZ = 8f;
+    public float maxZ = 8f;  // Destroy when bullet reaches this Z position
 
     private PlayerController playerController;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         playerController = FindObjectOfType<PlayerController>();
+        // Move in +Z direction (toward aliens)
         GetComponent<Rigidbody>().velocity = Vector3.forward * speed;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Destroy if out of bounds (past the aliens)
         if (transform.position.z > maxZ)
         {
             DestroyBullet();
@@ -46,23 +45,23 @@ public class PlayerBullet : MonoBehaviour
             }
             DestroyBullet();
         }
-        //else if (other.CompareTag("Shield"))
-        //{
-        //    ShieldBlock shield = other.GetComponent<ShieldBlock>();
-        //    if (shield != null)
-        //    {
-        //        shield.TakeDamage();
-        //    }
-        //    DestroyBullet();
-        //}
-        //else if (other.CompareTag("UFO"))
-        //{
-        //    UFO ufo = other.GetComponent<UFO>();
-        //    if (ufo != null)
-        //    {
-        //        ufo.Die();
-        //    }
-        //    DestroyBullet();
-        //}
+        else if (other.CompareTag("Shield"))
+        {
+            ShieldBlock shield = other.GetComponent<ShieldBlock>();
+            if (shield != null)
+            {
+                shield.TakeDamage();
+            }
+            DestroyBullet();
+        }
+        else if (other.CompareTag("UFO"))
+        {
+            UFO ufo = other.GetComponent<UFO>();
+            if (ufo != null)
+            {
+                ufo.Die();
+            }
+            DestroyBullet();
+        }
     }
 }
