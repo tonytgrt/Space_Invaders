@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public Text waveText;
     public Text gameOverText;
     public Text highScoreText;
+    public GameObject gameOverPanel;
     public GameObject floatingScorePrefab;
     public PlayerController player;
     public AlienFormation alienFormation;
@@ -45,9 +46,9 @@ public class GameManager : MonoBehaviour
         if (alienFormation == null)
             alienFormation = FindObjectOfType<AlienFormation>();
 
-        // Hide game over text
-        if (gameOverText != null)
-            gameOverText.gameObject.SetActive(false);
+        // Hide game over panel at start
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(false);
 
         UpdateUI();
     }
@@ -115,7 +116,6 @@ public class GameManager : MonoBehaviour
             AudioSource.PlayClipAtPoint(playerDeathSound, player.transform.position);
         }
 
-
         UpdateUI();
 
         if (lives <= 0)
@@ -162,10 +162,16 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
 
+        // Show game over panel
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(true);
+        }
+
+        // Update game over text with final score
         if (gameOverText != null)
         {
-            gameOverText.gameObject.SetActive(true);
-            gameOverText.text = "GAME OVER\n\nScore: " + score + "\nHigh Score: " + highScore + "\n\nPress ENTER to restart";
+            gameOverText.text = "GAME OVER\n\nScore: " + score + "\nHigh Score: " + highScore;
         }
 
         // Stop the game
@@ -182,6 +188,12 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void QuitToMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
     }
 
     void UpdateUI()
