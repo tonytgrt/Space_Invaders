@@ -115,12 +115,6 @@ public class GameManager : MonoBehaviour
             AudioSource.PlayClipAtPoint(playerDeathSound, player.transform.position);
         }
 
-        // Trigger camera shake
-        //CameraController camController = Camera.main.GetComponent<CameraController>();
-        //if (camController != null)
-        //{
-        //    camController.ShakeCamera();
-        //}
 
         UpdateUI();
 
