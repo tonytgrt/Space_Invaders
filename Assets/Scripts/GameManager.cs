@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public Text gameOverText;
     public Text highScoreText;
     public GameObject gameOverPanel;
+    public GameObject waveCompletePanel;
     public GameObject floatingScorePrefab;
     public PlayerController player;
     public AlienFormation alienFormation;
@@ -46,9 +47,11 @@ public class GameManager : MonoBehaviour
         if (alienFormation == null)
             alienFormation = FindObjectOfType<AlienFormation>();
 
-        // Hide game over panel at start
+        // Hide panels at start
         if (gameOverPanel != null)
             gameOverPanel.SetActive(false);
+        if (waveCompletePanel != null)
+            waveCompletePanel.SetActive(false);
 
         UpdateUI();
     }
@@ -146,15 +149,29 @@ public class GameManager : MonoBehaviour
         currentWave++;
         UpdateUI();
 
-        // Start next wave after delay
-        StartCoroutine(StartNextWave());
+        // Show wave complete panel
+        if (waveCompletePanel != null)
+        {
+            waveCompletePanel.SetActive(true);
+        }
+
+        // Pause the game while showing panel
+        Time.timeScale = 0f;
     }
 
-    IEnumerator StartNextWave()
+    // Called by Next Wave button
+    public void StartNextWaveButton()
     {
-        yield return new WaitForSeconds(2f);
+        // Hide panel
+        if (waveCompletePanel != null)
+        {
+            waveCompletePanel.SetActive(false);
+        }
 
-        // Reset alien formation
+        // Resume game
+        Time.timeScale = 1f;
+
+        // Reset alien formation for next wave
         alienFormation.ResetFormation();
     }
 
