@@ -210,7 +210,7 @@ public class PhysicsBulletAlien : MonoBehaviour
                 {
                     player.Die();
                 }
-                ConvertToDebris();
+                Destroy(gameObject);
             }
             else if (other.CompareTag("Shield"))
             {
@@ -219,7 +219,7 @@ public class PhysicsBulletAlien : MonoBehaviour
                 {
                     shield.TakeDamage();
                 }
-                ConvertToDebris();
+                Destroy(gameObject);
             }
         }
         // Player bullet behavior (hitting aliens/shields/UFO)
@@ -232,7 +232,7 @@ public class PhysicsBulletAlien : MonoBehaviour
                 {
                     alien.Die();
                 }
-                ConvertToPlayerDebris();
+                Destroy(gameObject);
             }
             else if (other.CompareTag("Shield"))
             {
@@ -241,7 +241,7 @@ public class PhysicsBulletAlien : MonoBehaviour
                 {
                     shield.TakeDamage();
                 }
-                ConvertToPlayerDebris();
+                Destroy(gameObject);
             }
             else if (other.CompareTag("UFO"))
             {
@@ -250,7 +250,7 @@ public class PhysicsBulletAlien : MonoBehaviour
                 {
                     ufo.Die();
                 }
-                ConvertToPlayerDebris();
+                Destroy(gameObject);
             }
         }
     }

@@ -156,7 +156,8 @@ public class PlayerController : MonoBehaviour
         {
             // More debris = slower movement
             //currentSpeedMultiplier = debrisSlowdown / debrisContactCount;
-            currentSpeedMultiplier = debrisSlowdown;
+            //currentSpeedMultiplier = debrisSlowdown;
+            currentSpeedMultiplier = 1f;
         }
         else
         {
