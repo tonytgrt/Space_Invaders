@@ -10,6 +10,7 @@ TagManager:
   - AlienBullet
   - Shield
   - UFO
+  - Debris
   layers:
   - Default
   - TransparentFX

@@ -6,18 +6,25 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     public float moveSpeed = 5f;
-    public float leftBound = -10f;
-    public float rightBound = 10f;
+    public float leftBound = -7f;
+    public float rightBound = 7f;
+
+    [Header("Physics")]
+    public float pushForce = 5f;           // Force applied to debris
+    public float debrisSlowdown = 0.5f;    // Speed multiplier when in debris
 
     [Header("Firing")]
     public GameObject bulletPrefab;
     public Transform firePoint;
     public AudioClip shootSound;
+    public float fireCooldown = 0.5f;  // Time between shots
 
-    private bool canFire = true;
+    private float lastFireTime = -999f;
     private AudioSource audioSource;
+    private Rigidbody rb;
+    private float currentSpeedMultiplier = 1f;
+    private int debrisContactCount = 0;
 
-    // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -25,19 +32,44 @@ public class PlayerController : MonoBehaviour
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
+
+        // Setup rigidbody for physics interactions
+        rb = GetComponent<Rigidbody>();
+        if (rb == null)
+        {
+            rb = gameObject.AddComponent<Rigidbody>();
+        }
+        rb.useGravity = false;
+        rb.constraints = RigidbodyConstraints.FreezePositionY |
+                        RigidbodyConstraints.FreezePositionZ |
+                        RigidbodyConstraints.FreezeRotationX |
+                        RigidbodyConstraints.FreezeRotationY |
+                        RigidbodyConstraints.FreezeRotationZ;
+        rb.mass = 5f;  // Heavier than debris
     }
 
-    // Update is called once per frame
     void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
+        HandleMovement();
+        HandleFiring();
+    }
+
+    void HandleMovement()
+    {
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+
+        // Apply slowdown if in debris
+        float effectiveSpeed = moveSpeed * currentSpeedMultiplier;
 
         Vector3 newPosition = transform.position;
-        newPosition.x += horizontalInput * moveSpeed * Time.deltaTime;
+        newPosition.x += horizontalInput * effectiveSpeed * Time.deltaTime;
         newPosition.x = Mathf.Clamp(newPosition.x, leftBound, rightBound);
         transform.position = newPosition;
+    }
 
-        if (Input.GetKeyDown(KeyCode.Space) && canFire)
+    void HandleFiring()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time >= lastFireTime + fireCooldown)
         {
             Fire();
         }
@@ -49,18 +81,88 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 spawnPos = firePoint != null ? firePoint.position : transform.position + Vector3.forward * 0.5f;
             Instantiate(bulletPrefab, spawnPos, Quaternion.identity);
-            canFire = false;
+            lastFireTime = Time.time;
 
-            if (shootSound != null)
+            if (shootSound != null && audioSource != null)
             {
                 audioSource.PlayOneShot(shootSound);
             }
         }
     }
 
+    // Kept for backward compatibility but no longer needed
     public void EnableFiring()
     {
-        canFire = true;
+        // No longer used - firing is now cooldown-based
+    }
+
+    // Physics collision with debris
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Debris"))
+        {
+            debrisContactCount++;
+            UpdateSpeedMultiplier();
+
+            // Push debris away
+            PhysicsAlien debris = collision.gameObject.GetComponent<PhysicsAlien>();
+            if (debris != null)
+            {
+                Vector3 pushDir = (collision.transform.position - transform.position).normalized;
+                pushDir.y = 0;
+                pushDir.z = 0; // Only push along X axis
+                debris.Push(pushDir, pushForce);
+            }
+
+            // Also push bullet debris
+            PhysicsBullet bulletDebris = collision.gameObject.GetComponent<PhysicsBullet>();
+            if (bulletDebris != null)
+            {
+                Vector3 pushDir = (collision.transform.position - transform.position).normalized;
+                pushDir.y = 0;
+                pushDir.z = 0;
+                bulletDebris.Push(pushDir, pushForce);
+            }
+        }
+    }
+
+    void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Debris"))
+        {
+            // Continue pushing while in contact
+            Rigidbody debrisRb = collision.gameObject.GetComponent<Rigidbody>();
+            if (debrisRb != null)
+            {
+                float moveDir = Input.GetAxisRaw("Horizontal");
+                if (moveDir != 0)
+                {
+                    debrisRb.AddForce(Vector3.right * moveDir * pushForce * 0.5f, ForceMode.Force);
+                }
+            }
+        }
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Debris"))
+        {
+            debrisContactCount = Mathf.Max(0, debrisContactCount - 1);
+            UpdateSpeedMultiplier();
+        }
+    }
+
+    void UpdateSpeedMultiplier()
+    {
+        if (debrisContactCount > 0)
+        {
+            // More debris = slower movement
+            currentSpeedMultiplier = debrisSlowdown / debrisContactCount;
+        }
+        else
+        {
+            currentSpeedMultiplier = 1f;
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -80,9 +182,4 @@ public class PlayerController : MonoBehaviour
             gm.PlayerHit();
         }
     }
-
-
-
 }
-
-

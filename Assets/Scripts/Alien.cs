@@ -44,12 +44,13 @@ public class Alien : MonoBehaviour
             AudioSource.PlayClipAtPoint(deathSound, transform.position);
         }
 
-        // Spawn explosion effect
+        // Spawn explosion effect (Part D Requirement 3)
         if (explosionPrefab != null)
         {
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         }
 
+        // Add score
         GameManager gm = FindObjectOfType<GameManager>();
         if (gm != null)
         {
@@ -62,7 +63,17 @@ public class Alien : MonoBehaviour
             formation.OnAlienKilled(this);
         }
 
-        Destroy(gameObject);
+        // Convert to physics debris instead of destroying
+        PhysicsAlien physicsAlien = GetComponent<PhysicsAlien>();
+        if (physicsAlien != null)
+        {
+            physicsAlien.ConvertToDebris();
+        }
+        else
+        {
+            // Fallback: destroy if no physics component
+            Destroy(gameObject);
+        }
     }
 
     public bool IsAlive()
