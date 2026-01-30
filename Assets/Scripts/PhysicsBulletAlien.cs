@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Player bullet with physics - converts to debris after hitting or missing target
+/// Alien bullet with physics - converts to debris after hitting or missing target
 /// </summary>
-public class PhysicsBullet : MonoBehaviour
+public class PhysicsBulletAlien : MonoBehaviour
 {
     [Header("Flight Settings")]
-    public float speed = 10f;
-    public float maxZ = 8f;  // Convert to debris when past this Z
+    public float speed = 5f;
+    public float missedZ = -5.5f;  // Convert to debris when past player (missed)
 
     [Header("Physics Settings")]
     public float groundZ = -6f;           // Ground position (behind player)
-    public float groundGravity = 5f;      // Pull toward ground
+    public float groundGravity = 8f;      // Pull toward ground (faster than player bullet)
     public float debrisDrag = 5f;
     public float lifetime = 30f;          // Destroy debris after this time
 
@@ -31,18 +31,20 @@ public class PhysicsBullet : MonoBehaviour
 
         rb.useGravity = false;
         rb.mass = 0.1f;
-        rb.velocity = Vector3.forward * speed;
+
+        // Alien bullets fly toward player (-Z direction)
+        rb.velocity = Vector3.back * speed;
     }
 
     void Update()
     {
-        // Convert to debris when past aliens
-        if (!isDebris && transform.position.z > maxZ)
+        // Convert to debris when past player (missed)
+        if (!isDebris && transform.position.z < missedZ)
         {
             ConvertToDebris();
         }
 
-        // Backup ground check
+        // Ground check for debris
         if (isDebris && !isOnGround && transform.position.z <= groundZ)
         {
             BecomeGroundDebris();
@@ -56,9 +58,9 @@ public class PhysicsBullet : MonoBehaviour
             // Apply gravity toward ground (-Z)
             rb.AddForce(Vector3.back * groundGravity, ForceMode.Acceleration);
 
-            // Clamp velocity
+            // Clamp velocity to prevent overshooting
             Vector3 vel = rb.velocity;
-            vel.z = Mathf.Max(vel.z, -10f);
+            vel.z = Mathf.Max(vel.z, -15f);
             rb.velocity = vel;
 
             if (transform.position.z <= groundZ)
@@ -72,17 +74,19 @@ public class PhysicsBullet : MonoBehaviour
     {
         if (isDebris) return;
 
-        if (other.CompareTag("Alien"))
+        if (other.CompareTag("Player"))
         {
-            Alien alien = other.GetComponent<Alien>();
-            if (alien != null)
+            // Hit player
+            PlayerController player = other.GetComponent<PlayerController>();
+            if (player != null)
             {
-                alien.Die();
+                player.Die();
             }
             ConvertToDebris();
         }
         else if (other.CompareTag("Shield"))
         {
+            // Hit shield
             ShieldBlock shield = other.GetComponent<ShieldBlock>();
             if (shield != null)
             {
@@ -90,23 +94,18 @@ public class PhysicsBullet : MonoBehaviour
             }
             ConvertToDebris();
         }
-        else if (other.CompareTag("UFO"))
-        {
-            UFO ufo = other.GetComponent<UFO>();
-            if (ufo != null)
-            {
-                ufo.Die();
-            }
-            ConvertToDebris();
-        }
     }
 
     void ConvertToDebris()
     {
+        if (isDebris) return;
         isDebris = true;
 
-        // Stop movement
-        rb.velocity = Vector3.zero;
+        // Stop forward movement
+        if (rb != null)
+        {
+            rb.velocity = Vector3.zero;
+        }
 
         // Change to debris tag
         gameObject.tag = "Debris";
@@ -119,7 +118,10 @@ public class PhysicsBullet : MonoBehaviour
         }
 
         // Add random tumble
-        rb.AddTorque(Random.insideUnitSphere * 2f, ForceMode.Impulse);
+        if (rb != null)
+        {
+            rb.AddTorque(Random.insideUnitSphere * 2f, ForceMode.Impulse);
+        }
 
         // Destroy after lifetime
         Destroy(gameObject, lifetime);
@@ -130,7 +132,7 @@ public class PhysicsBullet : MonoBehaviour
         if (isOnGround) return;
         isOnGround = true;
 
-        // Clamp to ground
+        // Clamp to ground position
         Vector3 pos = transform.position;
         pos.z = groundZ;
         pos.y = 0;
@@ -138,7 +140,7 @@ public class PhysicsBullet : MonoBehaviour
 
         if (rb != null)
         {
-            // Stop Z velocity
+            // Stop all Z velocity
             Vector3 vel = rb.velocity;
             vel.z = 0;
             rb.velocity = vel;
@@ -147,7 +149,7 @@ public class PhysicsBullet : MonoBehaviour
             rb.drag = debrisDrag;
             rb.angularDrag = debrisDrag;
 
-            // Lock position
+            // Lock position on ground
             rb.constraints = RigidbodyConstraints.FreezePositionY |
                             RigidbodyConstraints.FreezePositionZ |
                             RigidbodyConstraints.FreezeRotationX |

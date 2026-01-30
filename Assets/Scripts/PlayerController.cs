@@ -165,14 +165,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("AlienBullet"))
-        {
-            Die();
-            Destroy(other.gameObject);
-        }
-    }
+    // Note: AlienBullet collision is handled by PhysicsBulletAlien.cs
+    // Player's collider is non-trigger for physics interactions with debris
 
     public void Die()
     {

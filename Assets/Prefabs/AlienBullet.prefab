@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3930262447313347839}
   - component: {fileID: 4800814920704199843}
   - component: {fileID: 7123463172238490683}
-  - component: {fileID: 5127202018862116437}
+  - component: {fileID: 4349741660541136048}
   m_Layer: 0
   m_Name: AlienBullet
   m_TagString: AlienBullet
@@ -150,7 +150,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5127202018862116437
+--- !u!114 &4349741660541136048
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,15 +159,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1629758971886842698}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ec86a5162e2e2e419b754465b6a42ff, type: 3}
+  m_Script: {fileID: 11500000, guid: b1fc0cd0786111f48ac1dc9a2b4517e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  isPlayerBullet: 0
-  groundZ: -7
-  groundGravity: 5
-  debrisDrag: 5
-  lifetime: 30
 --- !u!1001 &5004815127487349215
 PrefabInstance:
   m_ObjectHideFlags: 0
