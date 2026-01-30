@@ -39,8 +39,14 @@ public class AlienFormation : MonoBehaviour
     private int stepSoundIndex = 0;
 
     [Header("Firing")]
-    public float fireInterval = 2f;
+    public float baseFireInterval = 2f;
+    public float minFireInterval = 0.3f;
+    private float currentFireInterval;
     private float fireTimer = 0f;
+
+    [Header("Descent Speed Scaling")]
+    public float startZ = 5f;              // Starting Z position of formation
+    public float maxDescentSpeedBonus = 3f; // Max speed multiplier from descent
 
     void Start()
     {
@@ -52,6 +58,7 @@ public class AlienFormation : MonoBehaviour
 
         SpawnFormation();
         currentStepTime = baseStepTime;
+        currentFireInterval = baseFireInterval;
     }
 
     void SpawnFormation()
@@ -122,7 +129,7 @@ public class AlienFormation : MonoBehaviour
         }
 
         // Random alien fires
-        if (fireTimer >= fireInterval)
+        if (fireTimer >= currentFireInterval)
         {
             fireTimer = 0f;
             AlienFire();
@@ -151,6 +158,9 @@ public class AlienFormation : MonoBehaviour
             // Drop toward player (-Z direction) and reverse horizontal direction
             transform.position += Vector3.back * dropDistance;
             direction *= -1;
+
+            // Update speed based on new position
+            UpdateDescentSpeed();
 
             // Check if any alien reached the player's line
             CheckPlayerLineReached();
@@ -235,16 +245,35 @@ public class AlienFormation : MonoBehaviour
         }
     }
 
+    void UpdateDescentSpeed()
+    {
+        // Calculate how far the formation has descended (0 = at start, 1 = at player)
+        float descentProgress = Mathf.Clamp01((startZ - transform.position.z) / (startZ - playerZ));
+
+        // Apply descent bonus to speed (higher = faster movement)
+        float descentSpeedMultiplier = 1f + descentProgress * maxDescentSpeedBonus;
+
+        // Combine with remaining aliens multiplier (avoid division by zero)
+        float aliensMultiplier = 1f;
+        if (totalAliens > 0)
+        {
+            aliensMultiplier = 1f + (1f - (float)aliensRemaining / totalAliens) * 3f;
+        }
+        float totalMultiplier = descentSpeedMultiplier * aliensMultiplier;
+
+        currentStepTime = Mathf.Max(minStepTime, baseStepTime / totalMultiplier);
+
+        // Also speed up firing based on descent
+        float fireMultiplier = 1f + descentProgress * 2f; // Fire up to 3x faster at player line
+        currentFireInterval = Mathf.Max(minFireInterval, baseFireInterval / fireMultiplier);
+    }
+
     public void OnAlienKilled(Alien alien)
     {
         aliensRemaining--;
 
-        // Speed up based on remaining aliens
-        float speedMultiplier = 1f + (1f - (float)aliensRemaining / totalAliens) * 3f;
-        currentStepTime = Mathf.Max(minStepTime, baseStepTime / speedMultiplier);
-
-        // Decrease fire interval slightly
-        fireInterval = Mathf.Max(0.5f, fireInterval - 0.05f);
+        // Recalculate speeds (combines descent + remaining aliens multipliers)
+        UpdateDescentSpeed();
 
         // Check for wave complete
         if (aliensRemaining <= 0)
@@ -269,10 +298,10 @@ public class AlienFormation : MonoBehaviour
         }
 
         // Reset position
-        transform.position = new Vector3(0, 0, 5);
+        transform.position = new Vector3(0, 0, startZ);
         direction = 1;
         currentStepTime = baseStepTime;
-        fireInterval = 2f;
+        currentFireInterval = baseFireInterval;
 
         // Spawn new formation
         SpawnFormation();

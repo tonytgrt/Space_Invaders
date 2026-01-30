@@ -56,6 +56,13 @@ public class PlayerController : MonoBehaviour
 
     void HandleMovement()
     {
+        // Clear any accumulated velocity from physics collisions
+        // (we control movement via transform, not physics)
+        if (rb != null)
+        {
+            rb.velocity = Vector3.zero;
+        }
+
         float horizontalInput = Input.GetAxisRaw("Horizontal");
 
         // Apply slowdown if in debris

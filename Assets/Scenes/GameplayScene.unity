@@ -729,7 +729,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 296096336}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1002,7 +1002,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 404867841}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1782,7 +1782,10 @@ MonoBehaviour:
   alienBulletPrefab: {fileID: 1629758971886842698, guid: 1fc38bedf0587ad43a04b71b6be3eac3, type: 3}
   stepSound: {fileID: 0}
   stepSounds: []
-  fireInterval: 1
+  baseFireInterval: 2
+  minFireInterval: 0.3
+  startZ: 5
+  maxDescentSpeedBonus: 3
 --- !u!4 &935123606
 Transform:
   m_ObjectHideFlags: 0
@@ -2296,7 +2299,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1219027972}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
