@@ -90,10 +90,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Kept for backward compatibility but no longer needed
     public void EnableFiring()
     {
-        // No longer used - firing is now cooldown-based
     }
 
     // Physics collision with debris
@@ -157,7 +155,8 @@ public class PlayerController : MonoBehaviour
         if (debrisContactCount > 0)
         {
             // More debris = slower movement
-            currentSpeedMultiplier = debrisSlowdown / debrisContactCount;
+            //currentSpeedMultiplier = debrisSlowdown / debrisContactCount;
+            currentSpeedMultiplier = debrisSlowdown;
         }
         else
         {

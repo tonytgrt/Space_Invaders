@@ -79,7 +79,7 @@ public class PhysicsBullet : MonoBehaviour
             {
                 alien.Die();
             }
-            ConvertToDebris();
+            Destroy(gameObject);
         }
         else if (other.CompareTag("Shield"))
         {
@@ -88,7 +88,7 @@ public class PhysicsBullet : MonoBehaviour
             {
                 shield.TakeDamage();
             }
-            ConvertToDebris();
+            Destroy(gameObject);
         }
         else if (other.CompareTag("UFO"))
         {
@@ -97,7 +97,7 @@ public class PhysicsBullet : MonoBehaviour
             {
                 ufo.Die();
             }
-            ConvertToDebris();
+            Destroy(gameObject);
         }
     }
 
