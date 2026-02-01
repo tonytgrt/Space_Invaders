@@ -2173,6 +2173,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 998411681}
   m_CullTransparentMesh: 1
+--- !u!1 &1035894439
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1035894441}
+  - component: {fileID: 1035894440}
+  m_Layer: 0
+  m_Name: DebrisRecycleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1035894440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1035894439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d263d6105c013fa448c596db53ce54c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  extraLifeThreshold: 15
+  powerUpThreshold: 30
+  sizeMultiplier: 1.5
+  fireRateMultiplier: 2
+  debrisClearSound: {fileID: 0}
+  extraLifeSound: {fileID: 0}
+  powerUpSound: {fileID: 0}
+  debrisCountText: {fileID: 0}
+  rewardText: {fileID: 0}
+  extraLifeEffectPrefab: {fileID: 0}
+  powerUpEffectPrefab: {fileID: 0}
+--- !u!4 &1035894441
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1035894439}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.41743386, y: 0.26915917, z: -4.181007}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1065006224
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2699,6 +2754,7 @@ MonoBehaviour:
   firePoint: {fileID: 1276459920}
   shootSound: {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
   fireCooldown: 0.5
+  powerUpSound: {fileID: 0}
 --- !u!1 &1683406908
 GameObject:
   m_ObjectHideFlags: 0
@@ -3133,3 +3189,4 @@ SceneRoots:
   - {fileID: 404867846}
   - {fileID: 296096340}
   - {fileID: 1219027976}
+  - {fileID: 1035894441}

@@ -96,6 +96,15 @@ public class GameManager : MonoBehaviour
         UpdateUI();
     }
 
+    /// <summary>
+    /// Add an extra life (called by DebrisRecycleManager)
+    /// </summary>
+    public void AddLife()
+    {
+        lives++;
+        UpdateUI();
+    }
+
     public void ShowFloatingScore(int points, Vector3 position)
     {
         if (floatingScorePrefab != null)

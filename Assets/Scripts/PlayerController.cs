@@ -19,6 +19,12 @@ public class PlayerController : MonoBehaviour
     public AudioClip shootSound;
     public float fireCooldown = 0.5f;  // Time between shots
 
+    [Header("Power-Up")]
+    public AudioClip powerUpSound;
+    private float fireRateMultiplier = 1f;
+    private Vector3 originalScale;
+    private bool hasPowerUp = false;
+
     private float lastFireTime = -999f;
     private AudioSource audioSource;
     private Rigidbody rb;
@@ -32,6 +38,9 @@ public class PlayerController : MonoBehaviour
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
+
+        // Store original scale for power-up
+        originalScale = transform.localScale;
 
         // Setup rigidbody for physics interactions
         rb = GetComponent<Rigidbody>();
@@ -76,7 +85,9 @@ public class PlayerController : MonoBehaviour
 
     void HandleFiring()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time >= lastFireTime + fireCooldown)
+        // Apply fire rate multiplier to cooldown
+        float effectiveCooldown = fireCooldown / fireRateMultiplier;
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time >= lastFireTime + effectiveCooldown)
         {
             Fire();
         }
@@ -181,6 +192,57 @@ public class PlayerController : MonoBehaviour
         if (gm != null)
         {
             gm.PlayerHit();
+        }
+    }
+
+    /// <summary>
+    /// Apply debris recycling power-up: bigger size and faster fire rate
+    /// Called by DebrisRecycleManager when threshold is reached
+    /// </summary>
+    public void ApplyRecyclePowerUp(float sizeMultiplier, float fireMultiplier)
+    {
+        if (hasPowerUp) return;  // Already has power-up
+
+        hasPowerUp = true;
+        fireRateMultiplier = fireMultiplier;
+
+        // Scale up the player
+        transform.localScale = originalScale * sizeMultiplier;
+
+        // Increase mass proportionally
+        if (rb != null)
+        {
+            rb.mass *= sizeMultiplier;
+        }
+
+        // Play power-up sound
+        if (powerUpSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(powerUpSound);
+        }
+
+        Debug.Log($"Power-Up Applied! Size: {sizeMultiplier}x, Fire Rate: {fireMultiplier}x");
+    }
+
+    /// <summary>
+    /// Check if player has the recycle power-up
+    /// </summary>
+    public bool HasRecyclePowerUp()
+    {
+        return hasPowerUp;
+    }
+
+    /// <summary>
+    /// Reset power-up state (call on respawn if desired)
+    /// </summary>
+    public void ResetPowerUp()
+    {
+        hasPowerUp = false;
+        fireRateMultiplier = 1f;
+        transform.localScale = originalScale;
+        if (rb != null)
+        {
+            rb.mass = 5f;
         }
     }
 }
