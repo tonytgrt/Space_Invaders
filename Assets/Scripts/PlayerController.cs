@@ -17,10 +17,15 @@ public class PlayerController : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
     public AudioClip shootSound;
+    [Range(0f, 2f)] public float shootVolume = 1f;
     public float fireCooldown = 0.5f;  // Time between shots
+
+    [Header("Effects")]
+    public GameObject explosionPrefab;
 
     [Header("Power-Up")]
     public AudioClip powerUpSound;
+    [Range(0f, 2f)] public float powerUpVolume = 1f;
     private float fireRateMultiplier = 1f;
     private Vector3 originalScale;
     private bool hasPowerUp = false;
@@ -103,7 +108,7 @@ public class PlayerController : MonoBehaviour
 
             if (shootSound != null && audioSource != null)
             {
-                audioSource.PlayOneShot(shootSound);
+                audioSource.PlayOneShot(shootSound, shootVolume);
             }
         }
     }
@@ -188,6 +193,12 @@ public class PlayerController : MonoBehaviour
 
     public void Die()
     {
+        // Spawn explosion effect
+        if (explosionPrefab != null)
+        {
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        }
+
         GameManager gm = FindObjectOfType<GameManager>();
         if (gm != null)
         {
@@ -218,7 +229,7 @@ public class PlayerController : MonoBehaviour
         // Play power-up sound
         if (powerUpSound != null && audioSource != null)
         {
-            audioSource.PlayOneShot(powerUpSound);
+            audioSource.PlayOneShot(powerUpSound, powerUpVolume);
         }
 
         Debug.Log($"Power-Up Applied! Size: {sizeMultiplier}x, Fire Rate: {fireMultiplier}x");

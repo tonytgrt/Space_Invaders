@@ -9,6 +9,7 @@ public class Alien : MonoBehaviour
     public int pointValue = 10;
     public AlienType alienType = AlienType.Squid;
     public AudioClip deathSound;
+    [Range(0f, 2f)] public float deathVolume = 1f;
     public GameObject explosionPrefab;
 
     private AlienFormation formation;
@@ -41,7 +42,7 @@ public class Alien : MonoBehaviour
         // Play death sound
         if (deathSound != null)
         {
-            AudioSource.PlayClipAtPoint(deathSound, transform.position);
+            AudioSource.PlayClipAtPoint(deathSound, transform.position, deathVolume);
         }
 
         // Spawn explosion effect (Part D Requirement 3)

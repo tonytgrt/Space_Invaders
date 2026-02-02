@@ -22,7 +22,7 @@ public class DebrisCleaner : MonoBehaviour
                 // Fallback: play sound locally if no manager
                 if (clearSound != null)
                 {
-                    AudioSource.PlayClipAtPoint(clearSound, transform.position, 0.5f);
+                    AudioSource.PlayClipAtPoint(clearSound, transform.position, 2f);
                 }
             }
 

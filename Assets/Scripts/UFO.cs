@@ -9,7 +9,9 @@ public class UFO : MonoBehaviour
     public float spawnChance = 0.5f;
     public int[] pointValues = { 50, 100, 150, 300 };
     public AudioClip flyingSound;
+    [Range(0f, 2f)] public float flyingVolume = 1f;
     public AudioClip explosionSound;
+    [Range(0f, 2f)] public float explosionVolume = 1f;
     public GameObject explosionPrefab;
 
     public float ufoZ = 5f;  // Z position where UFO flies
@@ -19,6 +21,8 @@ public class UFO : MonoBehaviour
     private AudioSource audioSource;
     private float leftSpawn = -15f;
     private float rightSpawn = 15f;
+    private Renderer ufoRenderer;
+    private Collider ufoCollider;
 
     void Start()
     {
@@ -29,6 +33,20 @@ public class UFO : MonoBehaviour
         }
         audioSource.loop = true;
         audioSource.clip = flyingSound;
+
+        // Cache renderer (may be on this object or child)
+        ufoRenderer = GetComponent<Renderer>();
+        if (ufoRenderer == null)
+        {
+            ufoRenderer = GetComponentInChildren<Renderer>();
+        }
+
+        // Cache collider
+        ufoCollider = GetComponent<Collider>();
+        if (ufoCollider == null)
+        {
+            ufoCollider = GetComponentInChildren<Collider>();
+        }
 
         Deactivate();
     }
@@ -78,12 +96,19 @@ public class UFO : MonoBehaviour
         transform.position = new Vector3(startX, 0, ufoZ);
 
         // Show and enable
-        GetComponent<Renderer>().enabled = true;
-        GetComponent<Collider>().enabled = true;
+        if (ufoRenderer != null)
+        {
+            ufoRenderer.enabled = true;
+        }
+        if (ufoCollider != null)
+        {
+            ufoCollider.enabled = true;
+        }
 
         // Play sound
         if (flyingSound != null)
         {
+            audioSource.volume = flyingVolume;
             audioSource.Play();
         }
     }
@@ -91,14 +116,38 @@ public class UFO : MonoBehaviour
     void Deactivate()
     {
         isActive = false;
-        GetComponent<Renderer>().enabled = false;
-        GetComponent<Collider>().enabled = false;
-        audioSource.Stop();
+
+        // Hide renderer
+        if (ufoRenderer != null)
+        {
+            ufoRenderer.enabled = false;
+        }
+
+        // Disable collider
+        if (ufoCollider != null)
+        {
+            ufoCollider.enabled = false;
+        }
+
+        // Stop sound
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+        }
+
+        // Move off screen to be safe
+        transform.position = new Vector3(leftSpawn - 10f, 0, ufoZ);
     }
 
     public void Die()
     {
-        if (!isActive) return;
+        if (!isActive)
+        {
+            Debug.Log("UFO.Die() called but UFO is not active");
+            return;
+        }
+
+        Debug.Log("UFO destroyed!");
 
         // Random point value
         int points = pointValues[Random.Range(0, pointValues.Length)];
@@ -113,15 +162,35 @@ public class UFO : MonoBehaviour
         // Play explosion sound
         if (explosionSound != null)
         {
-            AudioSource.PlayClipAtPoint(explosionSound, transform.position);
+            AudioSource.PlayClipAtPoint(explosionSound, transform.position, explosionVolume);
         }
 
-        // Spawn explosion
+        // Spawn explosion effect
         if (explosionPrefab != null)
         {
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         }
 
         Deactivate();
+    }
+
+    /// <summary>
+    /// Check if UFO is currently flying
+    /// </summary>
+    public bool IsActive()
+    {
+        return isActive;
+    }
+
+    // Fallback: detect player bullets hitting UFO directly
+    void OnTriggerEnter(Collider other)
+    {
+        if (!isActive) return;
+
+        if (other.CompareTag("PlayerBullet"))
+        {
+            Die();
+            Destroy(other.gameObject);
+        }
     }
 }

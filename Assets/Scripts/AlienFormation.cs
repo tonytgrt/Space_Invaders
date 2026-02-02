@@ -28,6 +28,7 @@ public class AlienFormation : MonoBehaviour
     [Header("Audio")]
     public AudioClip stepSound;
     public AudioClip[] stepSounds; // For the classic 4-note rhythm
+    [Range(0f, 2f)] public float stepVolume = 1f;
 
     private List<Alien> aliens = new List<Alien>();
     private int direction = 1; // 1 = right, -1 = left
@@ -179,12 +180,12 @@ public class AlienFormation : MonoBehaviour
     {
         if (stepSounds != null && stepSounds.Length > 0)
         {
-            audioSource.PlayOneShot(stepSounds[stepSoundIndex]);
+            audioSource.PlayOneShot(stepSounds[stepSoundIndex], stepVolume);
             stepSoundIndex = (stepSoundIndex + 1) % stepSounds.Length;
         }
         else if (stepSound != null)
         {
-            audioSource.PlayOneShot(stepSound);
+            audioSource.PlayOneShot(stepSound, stepVolume);
         }
     }
 

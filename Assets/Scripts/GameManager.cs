@@ -30,7 +30,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Audio")]
     public AudioClip playerDeathSound;
+    [Range(0f, 2f)] public float playerDeathVolume = 1f;
     public AudioClip extraLifeSound;
+    [Range(0f, 2f)] public float extraLifeVolume = 1f;
 
     private bool isGameOver = false;
     private bool isPaused = false;
@@ -82,7 +84,7 @@ public class GameManager : MonoBehaviour
             extraLifeAwarded = true;
             if (extraLifeSound != null)
             {
-                AudioSource.PlayClipAtPoint(extraLifeSound, Camera.main.transform.position);
+                AudioSource.PlayClipAtPoint(extraLifeSound, Camera.main.transform.position, extraLifeVolume);
             }
         }
 
@@ -125,7 +127,7 @@ public class GameManager : MonoBehaviour
 
         if (playerDeathSound != null)
         {
-            AudioSource.PlayClipAtPoint(playerDeathSound, player.transform.position);
+            AudioSource.PlayClipAtPoint(playerDeathSound, player.transform.position, playerDeathVolume);
         }
 
         UpdateUI();

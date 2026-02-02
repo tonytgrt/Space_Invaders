@@ -21,8 +21,11 @@ public class DebrisRecycleManager : MonoBehaviour
 
     [Header("Audio")]
     public AudioClip debrisClearSound;
+    [Range(0f, 2f)] public float debrisClearVolume = 0.5f;
     public AudioClip extraLifeSound;
+    [Range(0f, 2f)] public float extraLifeVolume = 1f;
     public AudioClip powerUpSound;
+    [Range(0f, 2f)] public float powerUpVolume = 1f;
 
     [Header("UI")]
     public Text debrisCountText;
@@ -68,7 +71,7 @@ public class DebrisRecycleManager : MonoBehaviour
         // Play clear sound
         if (debrisClearSound != null)
         {
-            AudioSource.PlayClipAtPoint(debrisClearSound, position, 0.5f);
+            AudioSource.PlayClipAtPoint(debrisClearSound, position, debrisClearVolume);
         }
 
         // Check for extra life reward
@@ -99,7 +102,7 @@ public class DebrisRecycleManager : MonoBehaviour
         // Play sound
         if (extraLifeSound != null)
         {
-            AudioSource.PlayClipAtPoint(extraLifeSound, Camera.main.transform.position);
+            AudioSource.PlayClipAtPoint(extraLifeSound, Camera.main.transform.position, extraLifeVolume);
         }
 
         // Spawn effect at player position
@@ -127,7 +130,7 @@ public class DebrisRecycleManager : MonoBehaviour
         // Play sound
         if (powerUpSound != null)
         {
-            AudioSource.PlayClipAtPoint(powerUpSound, Camera.main.transform.position);
+            AudioSource.PlayClipAtPoint(powerUpSound, Camera.main.transform.position, powerUpVolume);
         }
 
         // Spawn effect at player position
