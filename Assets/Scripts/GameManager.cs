@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public Text highScoreText;
     public GameObject gameOverPanel;
     public GameObject waveCompletePanel;
+    public GameObject pausePanel;
     public GameObject floatingScorePrefab;
     public PlayerController player;
     public AlienFormation alienFormation;
@@ -54,6 +55,8 @@ public class GameManager : MonoBehaviour
             gameOverPanel.SetActive(false);
         if (waveCompletePanel != null)
             waveCompletePanel.SetActive(false);
+        if (pausePanel != null)
+            pausePanel.SetActive(false);
 
         UpdateUI();
     }
@@ -208,14 +211,46 @@ public class GameManager : MonoBehaviour
 
     void TogglePause()
     {
+        // Don't allow pause during game over or wave complete
+        if (isGameOver) return;
+        if (waveCompletePanel != null && waveCompletePanel.activeSelf) return;
+
         isPaused = !isPaused;
         Time.timeScale = isPaused ? 0f : 1f;
+
+        // Show/hide pause panel
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(isPaused);
+        }
+    }
+
+    // Called by Resume button on pause panel
+    public void ResumeGame()
+    {
+        isPaused = false;
+        Time.timeScale = 1f;
+
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(false);
+        }
     }
 
     public void RestartGame()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ExitGame()
+    {
+        Time.timeScale = 1f;
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 
     public void QuitToMenu()
